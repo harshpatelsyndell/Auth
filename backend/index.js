@@ -4,6 +4,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoute = require("./routes/userRoutes");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 
 const app = express();
 const PORT = 8000;
@@ -23,6 +24,7 @@ app.use(
   })
 );
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api/user", userRoute);
 

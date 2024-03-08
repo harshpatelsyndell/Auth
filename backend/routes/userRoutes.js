@@ -1,8 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const authController = require("./../controllers/auth/authController");
-const { userSignupValidation } = require("../Validation/validation");
+const { getAllUserNames } = require("../controllers/allusers");
+const {
+  userDetail,
+} = require("../controllers/userDetail.js/userDetailController");
 
-router.post("/signup", userSignupValidation, authController.signup);
+router.post("/signup", authController.uploadUserPhoto, authController.signup);
+router.post("/login", authController.login);
+router.get("/users", authController.protect, getAllUserNames);
+router.get("/", authController.protect, userDetail);
 
 module.exports = router;

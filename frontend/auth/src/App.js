@@ -4,7 +4,7 @@ import "./App.css";
 import Login from "./pages/Login";
 import Homepage from "./pages/Homepage";
 import Signup from "./pages/Signup";
-import AuthContext, { AuthProvider } from "./AuthContext";
+import AuthContext from "./AuthContext";
 
 function App() {
   const { authenticated } = useContext(AuthContext);

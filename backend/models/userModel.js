@@ -12,7 +12,10 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
   },
-  photo: String,
+  photo: {
+    type: String,
+    default: "default.png",
+  },
   password: {
     type: String,
     required: [true, "please provide a password"],
