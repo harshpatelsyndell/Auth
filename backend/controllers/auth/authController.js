@@ -90,59 +90,27 @@ const {
   signupService,
   protectService,
   loginService,
+  uploadProfileImageService,
 } = require("./authService");
 const {
   userSignupValidation,
   userLoginValidation,
 } = require("../../Validation/validation");
-const multer = require("multer");
 
-const multerStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "public/img/users");
-  },
-  filename: (req, file, cb) => {
-    const ext = file.mimetype.split("/")[1];
-    cb(null, `user-${Date.now()}.${ext}`);
-  },
-});
-
-const multerFilter = (req, file, cb) => {
-  if (
-    file.mimetype.startsWith("image/jpeg") ||
-    file.mimetype.startsWith("image/jpg") ||
-    file.mimetype.startsWith("image/png")
-  ) {
-    cb(null, true);
-  } else {
-    const error = new Error(
-      "Not an image! Please upload only JPEG, JPG, or PNG images."
-    );
-    error.statusCode = 400;
-    cb(error, false);
+exports.uploadUserPhoto = async (req, res, next) => {
+  // console.log("file", req.file);
+  try {
+    await uploadProfileImageService(req, res, next);
+  } catch (error) {
+    console.log("Error:", error);
+    return res.status(500).json({ success: false, error: error.message });
   }
-};
-
-const upload = multer({
-  storage: multerStorage,
-  fileFilter: multerFilter,
-});
-exports.uploadUserPhoto = (req, res, next) => {
-  upload.single("photo")(req, res, (err) => {
-    if (err) {
-      return res.status(400).json({
-        success: false,
-        message: "Error uploading file",
-      });
-    }
-    // No errors, proceed to next middleware
-    next();
-  });
 };
 
 exports.signup = async (req, res) => {
   try {
     const data = req.body;
+    console.log("harshh:", data);
     const validationError = userSignupValidation(data);
 
     if (validationError) {

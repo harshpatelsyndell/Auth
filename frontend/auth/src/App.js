@@ -5,11 +5,13 @@ import Login from "./pages/Login";
 import Homepage from "./pages/Homepage";
 import Signup from "./pages/Signup";
 import AuthContext from "./AuthContext";
+import Navbar from "./componets/Navbar";
 
 function App() {
   const { authenticated } = useContext(AuthContext);
   return (
     <BrowserRouter>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route

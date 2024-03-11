@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema({
+  googleId: {
+    type: String,
+  },
   name: {
     type: String,
     required: [true, "Please tell us Your name!"],
@@ -18,12 +21,12 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, "please provide a password"],
+    // required: [true, "please provide a password"],
     minlength: 8,
   },
   passwordConfirm: {
     type: String,
-    required: [true, "please confirm your password"],
+    // required: [true, "please confirm your password"],
   },
 });
 

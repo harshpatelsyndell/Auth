@@ -5,6 +5,7 @@ const API_URL = "http://localhost:8000/api/user"; // Adjust URL as per your back
 const signup = async (userData) => {
   const response = await axios.post(`${API_URL}/signup`, userData, {
     withCredentials: true,
+    headers: { "Content-Type": "multipart/form-data" },
   });
   return response.data;
 };

@@ -2,21 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 // import Cookies from "js-cookie";
 import AuthContext from "../AuthContext";
-import { useNavigate } from "react-router-dom";
 import { getAllUserNames } from "../api/allUser";
 import { getUserDetails } from "../api/userDetail";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Cookies from "js-cookie";
 
 const Homepage = () => {
-  const { authenticated, logout } = useContext(AuthContext);
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/");
-    window.location.reload();
-  };
+  const { authenticated } = useContext(AuthContext);
 
   const [userNames, setUserNames] = useState([]);
   const [userDetails, setUserDetails] = useState([]);
@@ -51,30 +44,11 @@ const Homepage = () => {
     }
   }, [authenticated]);
 
+  console.log("tokennn:", Cookies.get("myCookie"));
+
   return (
     <div className="bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9] h-screen">
       <ToastContainer />
-      <div className="flex justify-between items-center p-5 bg-[#cbd5e1]">
-        <p className="text-3xl font-[glory]">Home</p>
-        {authenticated ? (
-          <div className="flex gap-5 items-center">
-            <p className="text-[#065f46]">You are logged in!</p>
-            <button
-              className="bg-[#212121] text-white px-5 py-1 rounded"
-              onClick={() => handleLogout()}
-            >
-              Logout
-            </button>
-          </div>
-        ) : (
-          <Link to="/login">
-            <button className="bg-[#212121] text-white px-5 py-1 rounded">
-              Login
-            </button>
-          </Link>
-        )}
-      </div>
-
       <div className="p-5 flex justify-between items-center">
         <div className="">
           {authenticated ? (

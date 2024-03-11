@@ -10,6 +10,8 @@ export const AuthProvider = ({ children }) => {
     !!Cookies.get("authorization")
   );
 
+  console.log("tokennn:", Cookies.get("myCookie"));
+
   const login = () => {
     setAuthenticated(true);
   };

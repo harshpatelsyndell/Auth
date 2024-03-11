@@ -1,6 +1,57 @@
 const { signupUser, protectUserRepo, loginUser } = require("./authRepository");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
+
+const multerStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/img/users");
+  },
+  filename: (req, file, cb) => {
+    const ext = file.mimetype.split("/")[1];
+    cb(null, `user-${Date.now()}.${ext}`);
+  },
+});
+
+const multerFilter = (req, file, cb) => {
+  console.log(file);
+  if (
+    file.mimetype.startsWith("image/jpeg") ||
+    file.mimetype.startsWith("image/jpg") ||
+    file.mimetype.startsWith("image/png")
+  ) {
+    cb(null, true);
+  } else {
+    const error = new Error(
+      "Not an image! Please upload only JPEG, JPG, or PNG images."
+    );
+    error.statusCode = 400;
+    cb(error, false);
+  }
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+exports.uploadProfileImageService = async (req, res, next) => {
+  try {
+    upload.single("photo")(req, res, (err) => {
+      if (err) {
+        return res.status(400).json({
+          success: false,
+          message: "Error uploading file",
+        });
+      }
+      // No errors, proceed to next middleware
+      next();
+    });
+  } catch (error) {
+    console.log("Error(uploadProfileImageService):", error);
+    throw new Error(error.message);
+  }
+};
 
 exports.signupService = async (req, res) => {
   const data = req.body;

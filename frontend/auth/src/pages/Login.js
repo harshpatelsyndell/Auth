@@ -48,47 +48,49 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
-      <div className="wrapper">
-        <ToastContainer />
-        <div className="title">
-          <span>Login Form</span>
-        </div>
-        <form onSubmit={handleSubmit}>
-          <div className="row">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              name="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
+    <>
+      <div className="container">
+        <div className="wrapper">
+          <ToastContainer />
+          <div className="title">
+            <span>Login Form</span>
           </div>
-          <div className="row">
-            <i className="fas fa-lock"></i>
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          {/* <div className="pass">
+          <form onSubmit={handleSubmit}>
+            <div className="row">
+              <i className="fas fa-user"></i>
+              <input
+                type="text"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="row">
+              <i className="fas fa-lock"></i>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            {/* <div className="pass">
             <a href="/">Forgot password?</a>
           </div> */}
-          <div className="row button">
-            <input type="submit" value="Login" />
-          </div>
-          <div className="signup-link">
-            Not a member? <Link to="/signup">Signup now</Link>
-          </div>
-        </form>
+            <div className="row button">
+              <input type="submit" value="Login" />
+            </div>
+            <div className="signup-link">
+              Not a member? <Link to="/signup">Signup now</Link>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
