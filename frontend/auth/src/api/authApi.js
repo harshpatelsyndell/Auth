@@ -17,4 +17,15 @@ const loginApi = async (userData) => {
   return response.data;
 };
 
-export { signup, loginApi };
+const signupWithGoogle = async (userGoogleData) => {
+  const response = await axios.post(
+    `${API_URL}/loginwithgoogle`,
+    userGoogleData,
+    {
+      withCredentials: true,
+    }
+  );
+  return response.data;
+};
+
+export { signup, loginApi, signupWithGoogle };

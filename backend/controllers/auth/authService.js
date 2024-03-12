@@ -1,4 +1,9 @@
-const { signupUser, protectUserRepo, loginUser } = require("./authRepository");
+const {
+  signupUser,
+  protectUserRepo,
+  loginUser,
+  signupWithGoogleUser,
+} = require("./authRepository");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
@@ -65,6 +70,17 @@ exports.signupService = async (req, res) => {
     //   httpOnly: true,
     //   sameSite: "strict",
     // });
+    return { token, newUser };
+  } catch (error) {
+    console.log("Error(signupService):", error);
+    throw new Error(error.message);
+  }
+};
+
+exports.signupWithGoogleService = async (req, res) => {
+  const data = req.body;
+  try {
+    const { token, newUser } = await signupWithGoogleUser(data);
     return { token, newUser };
   } catch (error) {
     console.log("Error(signupService):", error);

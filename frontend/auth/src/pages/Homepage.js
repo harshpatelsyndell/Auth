@@ -6,13 +6,13 @@ import { getAllUserNames } from "../api/allUser";
 import { getUserDetails } from "../api/userDetail";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Cookies from "js-cookie";
 
 const Homepage = () => {
   const { authenticated } = useContext(AuthContext);
 
   const [userNames, setUserNames] = useState([]);
   const [userDetails, setUserDetails] = useState([]);
+  console.log("userdata:", userDetails);
 
   useEffect(() => {
     if (authenticated) {
@@ -43,8 +43,6 @@ const Homepage = () => {
       fetchUser();
     }
   }, [authenticated]);
-
-  console.log("tokennn:", Cookies.get("myCookie"));
 
   return (
     <div className="bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9] h-screen">
@@ -82,12 +80,12 @@ const Homepage = () => {
             </Link>
           )}
         </div>
-        <div className="flex items-center gap-5">
+        <div className="flex gap-5">
           {authenticated && (
             <img
-              src={`http://localhost:8000/${userDetails.imagePath}`}
+              src={`${userDetails.imagePath}`}
               alt=""
-              className="w-10 h-10 rounded-full"
+              className="w-16 h-16 rounded-full"
             />
           )}
           <div>
@@ -97,6 +95,13 @@ const Homepage = () => {
             <p className="font-[glory] font-semibold text-[20px] text-[#082f49]">
               Name: {authenticated ? `${userDetails.name}` : "Guest"}
             </p>
+            {authenticated && (
+              <Link to="/editprofile">
+                <button className="bg-[#082f49] text-white px-5 py-1 rounded font-[glory] w-full my-5">
+                  Edit Profile
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       </div>

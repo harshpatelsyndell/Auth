@@ -1,10 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { signup } from "../api/authApi";
+import { signup, signupWithGoogle } from "../api/authApi";
 import Cookies from "js-cookie";
 import AuthContext from "../AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -78,9 +79,34 @@ const Signup = () => {
   //   window.open("http://localhost:8000/auth/google/callback", "_self");
   // };
 
-  const responseMessage = (response) => {
-    console.log(response);
+  const responseMessage = async (responseFromGoogle) => {
+    try {
+      const decodedToken = jwtDecode(responseFromGoogle.credential);
+      console.log("Decoded JWT token:", decodedToken);
+      const formDatas = {
+        googleId: decodedToken.sub,
+        name: decodedToken.name,
+        email: decodedToken.email,
+        picture: decodedToken.picture,
+      };
+      const response = await signupWithGoogle(formDatas);
+      toast("User signed up successfully with google");
+      if (response.success) {
+        const token = response.result.token;
+        Cookies.set("authorization", token, { expires: 7 });
+        login();
+        navigate("/");
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        const errorMessage = error.response.data.error.error.details[0].message;
+        toast(errorMessage);
+      } else {
+        console.error("Failed to sign up user with google:", error);
+      }
+    }
   };
+
   const errorMessage = (error) => {
     console.log(error);
   };

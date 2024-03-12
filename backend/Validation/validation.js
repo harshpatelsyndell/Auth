@@ -18,6 +18,19 @@ const userSignupValidation = (data) => {
   }
 };
 
+const userSignupWithGoogleValidation = (data) => {
+  const schema = Joi.object({
+    googleId: Joi.string().required(),
+    name: Joi.string().min(3).max(100).required(),
+    email: Joi.string().email().required(),
+    picture: Joi.any().allow(null).optional(),
+  });
+  const { error, value } = schema.validate(data);
+  if (error) {
+    return { message: "Invalid Details..", error };
+  }
+};
+
 const userLoginValidation = (data) => {
   const schema = Joi.object({
     email: Joi.string().email().required(),
@@ -29,4 +42,8 @@ const userLoginValidation = (data) => {
   }
 };
 
-module.exports = { userSignupValidation, userLoginValidation };
+module.exports = {
+  userSignupValidation,
+  userLoginValidation,
+  userSignupWithGoogleValidation,
+};

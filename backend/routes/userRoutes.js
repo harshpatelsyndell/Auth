@@ -7,6 +7,7 @@ const {
 } = require("../controllers/userDetail.js/userDetailController");
 
 router.post("/signup", authController.uploadUserPhoto, authController.signup);
+router.post("/loginwithgoogle", authController.signupWithGoogle);
 router.post("/login", authController.login);
 router.get("/users", authController.protect, getAllUserNames);
 router.get("/", authController.protect, userDetail);

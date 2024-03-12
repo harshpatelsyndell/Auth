@@ -23,6 +23,25 @@ exports.signupUser = async (data, file) => {
   return result;
 };
 
+exports.signupWithGoogleUser = async (data) => {
+  let existingUser = await User.findOne({ googleId: data.googleId });
+
+  if (existingUser) {
+    const token = signToken(existingUser._id);
+    return { token, existingUser };
+  } else {
+    const newUser = await User.create({
+      googleId: data.googleId,
+      name: data.name,
+      email: data.email,
+      photo: data.picture,
+    });
+    const token = signToken(newUser._id);
+
+    return { token, newUser };
+  }
+};
+
 exports.loginUser = async (data) => {
   const { email, password } = data;
   const user = await User.findOne({ email });

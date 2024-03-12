@@ -6,6 +6,7 @@ import Homepage from "./pages/Homepage";
 import Signup from "./pages/Signup";
 import AuthContext from "./AuthContext";
 import Navbar from "./componets/Navbar";
+import Profile from "./pages/Profile";
 
 function App() {
   const { authenticated } = useContext(AuthContext);
@@ -21,6 +22,10 @@ function App() {
         <Route
           path="signup"
           element={authenticated ? <Navigate to="/" /> : <Signup />}
+        />
+        <Route
+          path="editprofile"
+          element={authenticated ? <Profile /> : <Navigate to="/" />}
         />
       </Routes>
     </BrowserRouter>

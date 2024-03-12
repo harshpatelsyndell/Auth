@@ -91,10 +91,12 @@ const {
   protectService,
   loginService,
   uploadProfileImageService,
+  signupWithGoogleService,
 } = require("./authService");
 const {
   userSignupValidation,
   userLoginValidation,
+  userSignupWithGoogleValidation,
 } = require("../../Validation/validation");
 
 exports.uploadUserPhoto = async (req, res, next) => {
@@ -118,6 +120,26 @@ exports.signup = async (req, res) => {
     }
 
     const result = await signupService(req, res);
+    res.status(201).json({
+      success: true,
+      result,
+    });
+  } catch (error) {
+    console.log("Error:", error);
+    return res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+exports.signupWithGoogle = async (req, res) => {
+  try {
+    const data = req.body;
+    const validationError = userSignupWithGoogleValidation(data);
+
+    if (validationError) {
+      return res.status(400).json({ success: false, error: validationError });
+    }
+
+    const result = await signupWithGoogleService(req, res);
     res.status(201).json({
       success: true,
       result,
